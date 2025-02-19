@@ -1,14 +1,14 @@
 openapi: "3.0.3"
 info:
-  title: "Application API"
-  description: "Application API"
+  title: "MeteoAPI"
+  description: "Mon api renvoi le temp qu'il fait dans une zone donner en fonction de la ville,pays"
   version: "1.0.0"
 servers:
   - url: "http://0.0.0.0:8080"
 paths:
   /:
     get:
-      description: "Hello World!"
+      description: "Bienvenue sur mon API!"
       responses:
         "200":
           description: "OK"
@@ -18,6 +18,24 @@ paths:
                 type: "string"
               examples:
                 Example#1:
-                  value: "Hello World!"
+                  value: "Bienvenue sur mon API!"
+  /meteo:
+    get:
+      description: "sa permet de renvoyer le temp et prend en parametre un json {ville et pays }"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "json"
+              examples:
+                Example#1:
+                  value: "{
+                    adresse: Yaoundé, Cameroun,
+                    jour: 2025-02-19,
+                    conditions: Rain, Partially cloudy,
+                    temperature: 78.6
+                  }"
 components:
   schemas: {}

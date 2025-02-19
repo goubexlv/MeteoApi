@@ -16,10 +16,10 @@ import kotlinx.coroutines.TimeoutCancellationException
 fun Route.meteoRoute(meteoRepository: MeteoRepository) {
 
     get(Endpoint.Meteo.path){
-        //val apiReponse = call.receive<ApiRequest>()
+        val apiReponse = call.receive<ApiRequest>()
 
         try {
-            val response = meteoRepository.fetchPost("yaounde","cameroun")
+            val response = meteoRepository.fetchPost(apiReponse.ville,apiReponse.pays)
             call.respond(
                 message = InfoSortie(response!!.resolvedAddress,
                     response!!.days[0].datetime,

@@ -6,6 +6,6 @@ import io.ktor.server.routing.*
 
 fun Route.rootRoute(){
     get(Endpoint.Root.path){
-        call.respond(message = "Bienvenue sur mon API")
+        call.respond(message = "Bienvenue sur mon API!")
     }
 }
