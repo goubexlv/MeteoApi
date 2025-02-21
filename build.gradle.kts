@@ -21,6 +21,7 @@ repositories {
 }
 
 dependencies {
+    implementation("redis.clients:jedis:5.0.0")
     implementation("io.ktor:ktor-client-core:2.3.6")
     implementation("io.ktor:ktor-client-cio:2.3.6")
     implementation("io.ktor:ktor-client-content-negotiation:2.3.6")

@@ -9,6 +9,6 @@ import kotlinx.serialization.json.Json
 // Initialiser le client HTTP
 val client = HttpClient(CIO) {
     install(ContentNegotiation) {
-        json(Json { ignoreUnknownKeys = true }) // Ignore les champs inconnus
+        json(Json { ignoreUnknownKeys = true }) 
     }
 }

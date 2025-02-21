@@ -12,8 +12,7 @@ import java.time.LocalDate
 
 
 class MeteoRepositoryImpl : MeteoRepository {
-    override suspend fun fetchPost(ville: String, pays: String): ApiResponse? {
-        val today = LocalDate.now()
+    override suspend fun fetchPost(ville: String, pays: String, today : LocalDate): ApiResponse? {
         val url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/$ville,$pays/$today?key=$KEY_API"
         return client.get(url).body<ApiResponse>()
     }

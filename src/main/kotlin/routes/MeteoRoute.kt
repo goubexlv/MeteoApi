@@ -6,25 +6,43 @@ import com.daccvo.domain.reponse.StatusRepond
 import com.daccvo.domain.request.ApiRequest
 import com.daccvo.repository.MeteoRepository
 import com.daccvo.utils.Endpoint
+import com.daccvo.utils.RedisManager
 import io.ktor.client.plugins.*
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.TimeoutCancellationException
+import redis.clients.jedis.Jedis
+import java.time.LocalDate
 
 fun Route.meteoRoute(meteoRepository: MeteoRepository) {
 
     get(Endpoint.Meteo.path){
         val apiReponse = call.receive<ApiRequest>()
+        val today = LocalDate.now()
+        val cacheKey = "${apiReponse.ville},${apiReponse.pays},$today"
 
+        if (RedisManager.testConnection()) {
+            val cachedData = RedisManager.getInfoSortie(cacheKey)
+            if (cachedData != null) {
+                call.respond(HttpStatusCode.OK, cachedData)
+                return@get
+            }
+        } else {
+            call.respond(HttpStatusCode.InternalServerError, "Échec de la connexion à Redis ❌")
+        }
         try {
-            val response = meteoRepository.fetchPost(apiReponse.ville,apiReponse.pays)
+            val response = meteoRepository.fetchPost(apiReponse.ville,apiReponse.pays,today)
+            val infoSortie = InfoSortie(response!!.resolvedAddress,
+                response!!.days[0].datetime,
+                response!!.days[0].conditions,
+                response!!.days[0].temp)
+
+            RedisManager.saveInfoSortie(cacheKey, infoSortie)
+
             call.respond(
-                message = InfoSortie(response!!.resolvedAddress,
-                    response!!.days[0].datetime,
-                    response!!.days[0].conditions,
-                    response!!.days[0].temp),
+                message = infoSortie,
                 status = HttpStatusCode.OK
             )
         } catch (e: ClientRequestException) {

@@ -1,0 +1,21 @@
+version: "3"
+services:
+  meteoapiapp:
+    image: apimeteo
+    depends_on:
+      - redis
+    ports:
+      - "8080:8080"
+    networks:
+      - monreseau1
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - monreseau1
+    volumes:
+      - './redis_data:/data'
+
+networks:
+  monreseau1:
