@@ -1,4 +1,4 @@
-package com.daccvo.utils
+package com.daccvo.domain.model
 
 sealed class Endpoint (val path : String) {
     object Root: Endpoint(path = "/")

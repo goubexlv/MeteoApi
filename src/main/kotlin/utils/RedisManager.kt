@@ -3,6 +3,7 @@ package com.daccvo.utils
 import com.daccvo.domain.reponse.InfoSortie
 import com.daccvo.utils.Constants.IP
 import com.daccvo.utils.Constants.PORT
+import com.daccvo.utils.Constants.TIME
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -22,7 +23,7 @@ object RedisManager {
     fun saveInfoSortie(key: String, info: InfoSortie) {
         val json = Json.encodeToString(info)
         jedis.set(key,json)
-        jedis.expire(key, 1800)
+        jedis.expire(key, TIME)
     }
 
     fun getInfoSortie(key: String): InfoSortie? {

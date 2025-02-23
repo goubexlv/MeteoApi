@@ -1,11 +1,10 @@
 package com.daccvo.routes
 
-import com.daccvo.domain.reponse.ApiResponse
 import com.daccvo.domain.reponse.InfoSortie
 import com.daccvo.domain.reponse.StatusRepond
 import com.daccvo.domain.request.ApiRequest
 import com.daccvo.repository.MeteoRepository
-import com.daccvo.utils.Endpoint
+import com.daccvo.domain.model.Endpoint
 import com.daccvo.utils.RedisManager
 import io.ktor.client.plugins.*
 import io.ktor.http.*
@@ -13,7 +12,6 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.TimeoutCancellationException
-import redis.clients.jedis.Jedis
 import java.time.LocalDate
 
 fun Route.meteoRoute(meteoRepository: MeteoRepository) {

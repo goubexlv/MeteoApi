@@ -1,6 +1,6 @@
 package com.daccvo.routes
 
-import com.daccvo.utils.Endpoint
+import com.daccvo.domain.model.Endpoint
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
