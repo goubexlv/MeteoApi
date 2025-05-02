@@ -1,13 +1,4 @@
-version: "3"
 services:
-  meteoapiapp:
-    image: apimeteo
-    depends_on:
-      - redis
-    ports:
-      - "8080:8080"
-    networks:
-      - monreseau1
   redis:
     image: redis
     ports:
@@ -16,6 +7,16 @@ services:
       - monreseau1
     volumes:
       - './redis_data:/data'
+  meteoapiapp:
+    image: goubexlv/meteoapi
+    depends_on:
+      redis:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    networks:
+      - monreseau1
+  
 
 networks:
   monreseau1:

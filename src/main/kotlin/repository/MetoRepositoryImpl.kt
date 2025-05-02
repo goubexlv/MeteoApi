@@ -7,14 +7,18 @@ import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 
 class MeteoRepositoryImpl : MeteoRepository {
     override suspend fun fetchPost(ville: String, pays: String, today : LocalDate): ApiResponse? {
-        val url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/$ville,$pays/$today?key=$KEY_API"
-        return client.get(url).body<ApiResponse>()
+        return withContext(Dispatchers.IO) {
+            val url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/$ville,$pays/$today?key=$KEY_API"
+            client.get(url).body<ApiResponse>()
+        }
     }
 
 }

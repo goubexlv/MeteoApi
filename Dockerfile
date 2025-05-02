@@ -1,23 +1,23 @@
-# Étape 1 : Utiliser une image JDK pour la compilation
-FROM docker.io/gradle:8.4-jdk17 AS build
-WORKDIR /app
+# Stage 1: Cache Gradle dependencies
+FROM gradle:8.4-jdk17 AS cache
+RUN mkdir -p /home/gradle/cache_home
+ENV GRADLE_USER_HOME=/home/gradle/cache_home
+COPY build.gradle.* gradle.properties /home/gradle/app/
+COPY gradle /home/gradle/app/gradle
+WORKDIR /home/gradle/app
+RUN gradle clean build -i --stacktrace
 
-# Copier les fichiers du projet
-COPY . .
+# Stage 2: Build Application
+FROM gradle:8.4-jdk17 AS build
+COPY --from=cache /home/gradle/cache_home /home/gradle/.gradle
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
 
-# Construire l'application
-RUN gradle clean build -x test
+RUN gradle buildFatJar --no-daemon
 
-# Étape 2 : Utiliser une image JDK allégée pour exécuter l'application
-FROM docker.io/openjdk:17-jdk-slim
-
-WORKDIR /app
-
-# Copier le JAR généré depuis l’étape de build
-COPY --from=build /app/build/libs/*.jar app.jar
-
-# Exposer le port de l'application (remplace par le bon port si nécessaire)
+# Stage 3: Create the Runtime Image
+FROM amazoncorretto:22 AS runtime
 EXPOSE 8080
-
-# Lancer l'application
-CMD ["java", "-jar", "app.jar"]
+RUN mkdir /app
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/meteoapi.jar
+ENTRYPOINT ["java","-jar","/app/meteoapi.jar"]
