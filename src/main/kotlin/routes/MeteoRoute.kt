@@ -18,8 +18,10 @@ fun Route.meteoRoute(meteoRepository: MeteoRepository) {
 
     get(Endpoint.Meteo.path){
         val apiReponse = call.receive<ApiRequest>()
+        val ville = call.request.queryParameters["ville"]
+        val pays = call.request.queryParameters["pays"]
         val today = LocalDate.now()
-        val cacheKey = "${apiReponse.ville},${apiReponse.pays},$today"
+        val cacheKey = "${ville},${pays},$today"
 
         if (RedisManager.testConnection()) {
             val cachedData = RedisManager.getInfoSortie(cacheKey)
