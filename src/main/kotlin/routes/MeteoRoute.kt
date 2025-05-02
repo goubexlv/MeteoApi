@@ -33,18 +33,24 @@ fun Route.meteoRoute(meteoRepository: MeteoRepository) {
             call.respond(HttpStatusCode.InternalServerError, "Échec de la connexion à Redis ❌")
         }
         try {
-            val response = meteoRepository.fetchPost(apiReponse.ville,apiReponse.pays,today)
-            val infoSortie = InfoSortie(response!!.resolvedAddress,
-                response!!.days[0].datetime,
-                response!!.days[0].conditions,
-                response!!.days[0].temp)
+            if (pays != null && ville != null) {
+                val response = meteoRepository.fetchPost(ville,pays,today)
+                val infoSortie = InfoSortie(response!!.resolvedAddress,
+                    response!!.days[0].datetime,
+                    response!!.days[0].conditions,
+                    response!!.days[0].temp)
 
-            RedisManager.saveInfoSortie(cacheKey, infoSortie)
+                RedisManager.saveInfoSortie(cacheKey, infoSortie)
 
-            call.respond(
-                message = infoSortie,
-                status = HttpStatusCode.OK
-            )
+                call.respond(
+                    message = infoSortie,
+                    status = HttpStatusCode.OK
+                )
+            } else {
+                // Si l'un des paramètres est manquant
+                call.respond(HttpStatusCode.BadRequest, "Paramètres manquants")
+            }
+
         } catch (e: ClientRequestException) {
             call.respond(
                 message = StatusRepond(e.response.status.value, "Erreur client: ${e.message}"),
