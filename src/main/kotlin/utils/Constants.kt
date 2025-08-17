@@ -4,7 +4,7 @@ import io.github.cdimascio.dotenv.dotenv
 import kotlin.String
 
 object Constants {
-    val dotenv = dotenv()
+    //val dotenv = dotenv()
 //    val VISUALCROSSING_API : String = dotenv["VISUALCROSSING_API"].toString()
 //    val HOST_REDIS : String = dotenv["REDIS_HOST"].toString()
 //    val PORT_REDIS : Int = dotenv["REDIS_PORT"].toInt()
