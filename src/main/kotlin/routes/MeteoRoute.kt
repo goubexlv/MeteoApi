@@ -22,15 +22,15 @@ fun Route.meteoRoute(meteoRepository: MeteoRepository) {
         val today = LocalDate.now()
         val cacheKey = "${ville},${pays},$today"
 
-//        if (RedisManager.testConnection()) {
-//            val cachedData = RedisManager.getInfoSortie(cacheKey)
-//            if (cachedData != null) {
-//                call.respond(HttpStatusCode.OK, cachedData)
-//                return@get
-//            }
-//        } else {
-//            call.respond(HttpStatusCode.InternalServerError, "Échec de la connexion à Redis ❌")
-//        }
+        if (RedisManager.testConnection()) {
+            val cachedData = RedisManager.getInfoSortie(cacheKey)
+            if (cachedData != null) {
+                call.respond(HttpStatusCode.OK, cachedData)
+                return@get
+            }
+        } else {
+            call.respond(HttpStatusCode.InternalServerError, "Échec de la connexion à Redis ❌")
+        }
         try {
             if (pays != null && ville != null) {
                 val response = meteoRepository.fetchPost(ville,pays,today)
