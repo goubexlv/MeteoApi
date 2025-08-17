@@ -1,9 +1,14 @@
 package com.daccvo.utils
 
+import io.github.cdimascio.dotenv.dotenv
+import kotlin.String
+
 object Constants {
-    const val KEY_API = "SGP5NP5VG76WY7EXMKFDUHEZN"
-    const val IP = "redis"
-    const val PORT = 6379
+    val dotenv = dotenv()
+    val VISUALCROSSING_API : String = dotenv["VISUALCROSSING_API"].toString()
+    val HOST_REDIS : String = dotenv["HOST_REDIS"].toString()
+    val PORT_REDIS : Int = dotenv["PORT_REDIS"].toInt()
     const val TIME = 1800L
-    
+
+
 }

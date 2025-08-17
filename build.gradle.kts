@@ -25,6 +25,7 @@ dependencies {
     implementation("io.ktor:ktor-client-core:2.3.6")
     implementation("io.ktor:ktor-client-cio:2.3.6")
     implementation("io.ktor:ktor-client-content-negotiation:2.3.6")
+    implementation(libs.dotenv.kotlin)
     implementation(libs.ktor.server.rate.limiting)
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.server.core)

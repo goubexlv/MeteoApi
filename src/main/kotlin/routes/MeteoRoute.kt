@@ -17,7 +17,6 @@ import java.time.LocalDate
 fun Route.meteoRoute(meteoRepository: MeteoRepository) {
 
     get(Endpoint.Meteo.path){
-
         val ville = call.request.queryParameters["ville"]
         val pays = call.request.queryParameters["pays"]
         val today = LocalDate.now()
@@ -39,9 +38,7 @@ fun Route.meteoRoute(meteoRepository: MeteoRepository) {
                     response!!.days[0].datetime,
                     response!!.days[0].conditions,
                     response!!.days[0].temp)
-
                 RedisManager.saveInfoSortie(cacheKey, infoSortie)
-
                 call.respond(
                     message = infoSortie,
                     status = HttpStatusCode.OK
@@ -50,7 +47,6 @@ fun Route.meteoRoute(meteoRepository: MeteoRepository) {
                 // Si l'un des paramètres est manquant
                 call.respond(HttpStatusCode.BadRequest, "Paramètres manquants")
             }
-
         } catch (e: ClientRequestException) {
             call.respond(
                 message = StatusRepond(e.response.status.value, "Erreur client: ${e.message}"),

@@ -1,16 +1,15 @@
 package com.daccvo.utils
 
 import com.daccvo.domain.reponse.InfoSortie
-import com.daccvo.utils.Constants.IP
-import com.daccvo.utils.Constants.PORT
+import com.daccvo.utils.Constants.HOST_REDIS
+import com.daccvo.utils.Constants.PORT_REDIS
 import com.daccvo.utils.Constants.TIME
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import redis.clients.jedis.Jedis
 
 object RedisManager {
-    private val jedis: Jedis = Jedis(IP, PORT)
+    private val jedis: Jedis = Jedis(HOST_REDIS, PORT_REDIS)
 
     fun testConnection(): Boolean {
         return try {
