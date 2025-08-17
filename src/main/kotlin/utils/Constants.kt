@@ -10,10 +10,7 @@ object Constants {
 //    val PORT_REDIS : Int = dotenv["REDIS_PORT"].toInt()
 
     val VISUALCROSSING_API : String = System.getenv("VISUALCROSSING_API").toString()
-    val HOST_REDIS : String = System.getenv("REDIS_HOST").toString()
-    val PORT_REDIS : Int = System.getenv("REDIS_PORT").toInt()
-    val USERNAME_REDIS : String = System.getenv("USERNAME_REDIS").toString()
-    val PASSWORD_REDIS : String = System.getenv("PASSWORD_REDIS").toString()
+
     const val TIME = 1800L
 
 
