@@ -6,8 +6,8 @@ import kotlin.String
 object Constants {
     val dotenv = dotenv()
     val VISUALCROSSING_API : String = dotenv["VISUALCROSSING_API"].toString()
-    val HOST_REDIS : String = dotenv["HOST_REDIS"].toString()
-    val PORT_REDIS : Int = dotenv["PORT_REDIS"].toInt()
+    val HOST_REDIS : String = dotenv["REDIS_HOST"].toString()
+    val PORT_REDIS : Int = dotenv["REDIS_PORT"].toInt()
     const val TIME = 1800L
 
 

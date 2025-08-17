@@ -1,22 +1,32 @@
+version: "3.9"
+
 services:
   redis:
-    image: redis
+    image: redis:7
+    container_name: redis_meteo
     ports:
       - "6379:6379"
     networks:
       - monreseau1
     volumes:
-      - './redis_data:/data'
+      - ./redis_data:/data
+
   meteoapiapp:
-    image: meteoapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: meteoapi_app
     depends_on:
-      redis:
-        condition: service_started
+      - redis
     ports:
       - "8080:8080"
     networks:
       - monreseau1
-  
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      # Ajoute ici d'autres variables si nécessaire, ex: DATABASE_URL
 
 networks:
   monreseau1:
+    driver: bridge
